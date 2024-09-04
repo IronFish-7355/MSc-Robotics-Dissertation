@@ -1,0 +1,68 @@
+from Gripper_functions import GripperController
+import time
+
+def gripper_control_example():
+    # Initialize and start the gripper controller
+    gripper = GripperController(port='COM4')  # Adjust the COM port as needed
+    gripper.start()
+
+    try:
+        # 1. Set initial parameters
+        print("Setting initial parameters...")
+        gripper.add_command(force=30, speed=50, position=0)
+        time.sleep(2)  # Wait for the command to be processed
+
+        # Read current parameters
+        print("\nReading current parameters:")
+        gripper.read_parameter("force")
+        gripper.read_parameter("speed")
+        gripper.read_parameter("position")
+
+        # 2. Open the gripper
+        print("\nOpening the gripper...")
+        gripper.add_command(position=1000)
+        time.sleep(2)
+
+        # 3. Adjust speed only
+        print("\nIncreasing speed...")
+        gripper.add_command(speed=100)
+        time.sleep(1)
+
+        # 4. Close the gripper partially with increased force
+        print("\nPartially closing gripper with increased force...")
+        gripper.add_command(force=50, position=500)
+        time.sleep(2)
+
+        # 5. Adjust multiple parameters
+        print("\nAdjusting multiple parameters...")
+        gripper.add_command(force=40, speed=75, position=250)
+        time.sleep(2)
+
+        # 6. Demonstrate individual parameter control
+        print("\nDemonstrating individual parameter control:")
+
+        print("Changing force only...")
+        gripper.add_command(force=60)
+        time.sleep(1)
+
+        print("Changing speed only...")
+        gripper.add_command(speed=60)
+        time.sleep(1)
+
+        print("Changing position only...")
+        gripper.add_command(position=750)
+        time.sleep(2)
+
+        # 7. Read final parameters
+        print("\nReading final parameters:")
+        gripper.read_parameter("force")
+        gripper.read_parameter("speed")
+        gripper.read_parameter("position")
+
+    finally:
+        # Always stop the gripper controller when done
+        print("\nStopping gripper controller...")
+        gripper.stop()
+
+if __name__ == "__main__":
+    gripper_control_example()
